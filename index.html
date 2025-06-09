@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sukhrobjon Jalolov | Full-Stack Developer</title>
+
+  <!-- Embedded Stylesheet -->
+  <style>
+    /* General Body Styles */
+    body {
+      font-family: 'Inter', sans-serif; /* Using Inter for a clean look */
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5; /* Light grey background */
+      color: #333;
+      overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+    }
+
+    /* Custom Scrollbar (for a cleaner look) */
+    body::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    body::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 5px;
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 5px;
+    }
+
+    body::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    /* Vanta Background Container */
+    #vanta-bg {
+      width: 100%;
+      height: 100vh; /* Full viewport height */
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1; /* Send it behind other content */
+    }
+
+    /* Global Container for content alignment */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Navbar Styling */
+    nav {
+      background-color: rgba(25, 25, 25, 0.95); /* Dark semi-transparent background, more opaque */
+      color: #fff;
+      padding: 1rem 0;
+      position: fixed; /* Fixed at the top */
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000; /* Ensure it stays on top */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+      backdrop-filter: blur(5px); /* Subtle blur effect */
+      -webkit-backdrop-filter: blur(5px); /* For Safari */
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      margin: 0;
+      font-size: 1.9rem;
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-left: 35px; /* Slightly more space */
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.4s ease, transform 0.3s ease;
+      position: relative;
+      padding-bottom: 8px; /* More space for underline effect */
+      font-size: 1.05rem;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px; /* Thicker underline */
+      background-color: #61dafb; /* React blue for highlight */
+      bottom: 0;
+      left: 0;
+      transition: width 0.4s ease-in-out;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    nav ul li a:hover {
+      color: #61dafb;
+      transform: translateY(-3px); /* More pronounced lift */
+    }
+
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      z-index: 1; /* Ensure hero content is above Vanta background */
+      padding-top: 80px; /* Space for fixed navbar */
+      /* Added a subtle gradient overlay for better text readability on Vanta.js */
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+    }
+
+    .hero-content {
+      opacity: 0; /* Hidden by default for fade-in effect */
+      transform: translateY(20px);
+      animation: fadeInFromBottom 1s forwards 0.5s; /* Fade in with a delay */
+    }
+
+    @keyframes fadeInFromBottom {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-content h1 {
+      font-size: 4.5rem; /* Larger hero title */
+      margin-bottom: 20px;
+      font-weight: 800;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.6); /* Stronger text shadow */
+      letter-spacing: 1px;
+    }
+
+    .hero-content .typewriter {
+      font-size: 2.5rem; /* Larger typewriter text */
+      font-weight: 300;
+      margin-bottom: 50px;
+      min-height: 2.8rem; /* Prevent layout shift during typing */
+      color: #e0e0e0;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background-color: #61dafb; /* React blue */
+      color: #282c34; /* Dark text for contrast */
+      padding: 18px 40px; /* More padding */
+      text-decoration: none;
+      border-radius: 50px; /* Pill-shaped button */
+      font-size: 1.3rem; /* Larger font */
+      font-weight: 700;
+      transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
+      box-shadow: 0 6px 20px rgba(97, 218, 251, 0.4); /* Stronger shadow */
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      z-index: -1;
+    }
+
+    .cta-btn:hover::before {
+      left: 100%;
+    }
+
+    .cta-btn:hover {
+      background-color: #21a1f1; /* Darker blue on hover */
+      transform: translateY(-5px); /* More pronounced lift */
+      box-shadow: 0 8px 25px rgba(97, 218, 251, 0.6);
+    }
+
+    /* Section General Styles */
+    .section {
+      padding: 100px 0;
+      text-align: center;
+      background-color: #fff;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.08); /* More prominent shadow */
+      border-bottom: 1px solid #e0e0e0; /* Subtle separator */
+      position: relative;
+      overflow: hidden; /* Clear floats/overflows */
+    }
+
+    .section:nth-of-type(even) {
+      background-color: #f9fbfd; /* Slightly lighter alternate background */
+    }
+
+    .section h2 {
+      font-size: 3.2rem; /* Slightly larger section titles */
+      margin-bottom: 60px;
+      position: relative;
+      display: inline-block;
+      color: #282c34;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -18px; /* Deeper underline */
+      transform: translateX(-50%);
+      width: 90px; /* Longer underline */
+      height: 5px; /* Thicker underline */
+      background-color: #61dafb; /* Highlight color */
+      border-radius: 3px;
+    }
+
+    .section p {
+      font-size: 1.15rem; /* Slightly larger body text */
+      max-width: 850px;
+      margin: 0 auto 25px;
+      color: #555;
+      line-height: 1.9;
+    }
+
+    /* About Me Section specific */
+    #about {
+      background: linear-gradient(to bottom right, #ffffff, #f0f2f5); /* Subtle gradient for about */
+    }
+
+    #about p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    /* Skills Section */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px; /* More space between skill categories */
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .skill-category {
+      background-color: #ffffff;
+      padding: 35px; /* More padding */
+      border-radius: 15px; /* More rounded corners */
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+      border: 1px solid #e0e0e0;
+    }
+
+    .skill-category:hover {
+      transform: translateY(-8px); /* More pronounced lift */
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); /* Even stronger shadow */
+    }
+
+    .skill-category h3 {
+      color: #61dafb;
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 1.6rem;
+      font-weight: 700;
+      border-bottom: 3px solid #e0f7fa; /* Thicker border */
+      padding-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .skill-category ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .skill-category li {
+      margin-bottom: 15px; /* More space between list items */
+      font-size: 1.1rem;
+      color: #444;
+      position: relative;
+      padding-left: 30px; /* More space for custom bullet */
+      transition: color 0.3s ease;
+    }
+
+    .skill-category li:hover {
+      color: #000; /* Darker on hover */
+    }
+
+    .skill-category li::before {
+      content: '✓'; /* Custom checkmark bullet */
+      color: #28a745; /* Green check */
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 1.2em; /* Larger checkmark */
+    }
+
+    /* Projects Section */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 50px; /* More space between project cards */
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .project-card {
+      background-color: #fff;
+      border-radius: 18px; /* More rounded corners */
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+      overflow: hidden;
+      text-align: left;
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px); /* More pronounced lift */
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); /* Even stronger shadow */
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 230px; /* Consistent image height */
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid #f0f0f0;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover img {
+      transform: scale(1.05); /* Slight zoom on image hover */
+    }
+
+    .project-card h3 {
+      margin: 25px 25px 12px; /* More padding */
+      color: #282c34;
+      font-size: 1.8rem; /* Slightly larger project titles */
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .project-card p {
+      margin: 0 25px 25px; /* More padding */
+      font-size: 1rem;
+      color: #666;
+      flex-grow: 1;
+      line-height: 1.7;
+    }
+
+    .project-card .project-tech {
+      padding: 0 25px 20px; /* More padding */
+      display: flex;
+      flex-wrap: wrap; /* Allow tags to wrap */
+      gap: 8px; /* Space between tags */
+    }
+
+    .project-card .project-tech span {
+      display: inline-block;
+      background-color: #e0f7fa; /* Light blue tag */
+      color: #282c34;
+      padding: 8px 15px; /* More padding for tags */
+      border-radius: 25px; /* More rounded tags */
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .project-card .project-tech span:hover {
+      background-color: #c4e4eb; /* Darker on hover */
+    }
+
+    .project-card .project-links {
+      padding: 20px 25px 25px; /* More padding */
+      border-top: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-around;
+      gap: 20px; /* More space between links */
+    }
+
+    .project-card .project-links a {
+      color: #61dafb;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      font-size: 1.05rem;
+    }
+
+    .project-card .project-links a i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    .project-card .project-links a:hover {
+      color: #21a1f1;
+      transform: translateY(-3px);
+    }
+
+    /* Contact Section */
+    .contact-info {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contact-info p {
+      font-size: 1.25rem; /* Larger contact info text */
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      color: #444;
+    }
+
+    .contact-info p i {
+      margin-right: 18px; /* More space for icons */
+      color: #61dafb;
+      font-size: 1.6rem; /* Larger icons */
+    }
+
+    .contact-info a {
+      color: #61dafb;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .contact-info a:hover {
+      color: #21a1f1;
+    }
+
+    /* Optional: Basic Form Styles */
+    .contact-form {
+      max-width: 650px; /* Slightly wider form */
+      margin: 50px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 25px; /* More space between form elements */
+      padding: 40px; /* More padding */
+      background-color: #fff;
+      border-radius: 15px; /* More rounded corners */
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: calc(100% - 28px); /* Adjust for increased padding */
+      padding: 14px; /* More padding */
+      border: 1px solid #ccc;
+      border-radius: 10px; /* More rounded fields */
+      font-size: 1.05rem;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: #61dafb;
+      box-shadow: 0 0 10px rgba(97, 218, 251, 0.4); /* Stronger focus shadow */
+      outline: none;
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 150px; /* Taller textarea */
+    }
+
+    .contact-form button {
+      background-color: #28a745; /* Green for send button */
+      color: #fff;
+      padding: 16px 30px; /* More padding */
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 700;
+      transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    }
+
+    .contact-form button:hover {
+      background-color: #218838; /* Darker green on hover */
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(40, 167, 69, 0.6);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #282c34; /* Dark background */
+      color: #e0e0e0;
+      text-align: center;
+      padding: 30px 0; /* More padding */
+      font-size: 0.95rem;
+      border-top: 5px solid #61dafb; /* A subtle highlight */
+      letter-spacing: 0.2px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .hero-content h1 {
+        font-size: 3.8rem;
+      }
+      .hero-content .typewriter {
+        font-size: 2rem;
+      }
+      .section h2 {
+        font-size: 2.8rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav .container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      nav h1 {
+        margin-bottom: 15px;
+        font-size: 1.7rem;
+      }
+
+      nav ul {
+        margin-top: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav ul li {
+        margin: 0 15px 10px;
+      }
+
+      nav ul li a {
+        font-size: 1rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+      }
+
+      .hero-content .typewriter {
+        font-size: 1.6rem;
+      }
+
+      .cta-btn {
+        padding: 14px 30px;
+        font-size: 1.1rem;
+      }
+
+      .section {
+        padding: 70px 0;
+      }
+
+      .section h2 {
+        font-size: 2.3rem;
+        margin-bottom: 40px;
+      }
+
+      .section p {
+        font-size: 1.05rem;
+      }
+
+      .skills-grid,
+      .projects-grid {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+        padding: 0 20px;
+        gap: 30px;
+      }
+
+      .skill-category {
+        padding: 30px;
+      }
+
+      .project-card img {
+        height: 200px;
+      }
+
+      .project-card h3 {
+        font-size: 1.6rem;
+      }
+      .project-card p {
+        font-size: 0.95rem;
+      }
+      .project-card .project-tech span {
+        font-size: 0.85rem;
+      }
+
+      .contact-info p {
+        font-size: 1.1rem;
+      }
+
+      .contact-info p i {
+        font-size: 1.4rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav ul li {
+        margin: 0 8px 10px;
+      }
+
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-content .typewriter {
+        font-size: 1.3rem;
+      }
+
+      .section h2 {
+        font-size: 2rem;
+      }
+
+      .skills-grid,
+      .projects-grid,
+      .contact-form {
+        padding: 0 15px;
+      }
+
+      .skill-category {
+        padding: 25px;
+      }
+
+      .project-card h3 {
+        font-size: 1.4rem;
+      }
+
+      .contact-info p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+
+  <!-- Vanta.js Waves Background -->
+  <!-- Note: Using r121 for Three.js as specified in original file. Adjust if newer versions are preferred. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.waves.min.js"></script>
+
+  <!-- TypeIt.js Typewriter Effect -->
+  <script src="https://cdn.jsdelivr.net/npm/typeit@8.7.1/dist/index.umd.js"></script>
+
+  <!-- Font Awesome for icons (optional, for contact/social media) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <!-- Vanta Background Container -->
+  <div id="vanta-bg"></div>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="container">
+      <h1>Sukhrobjon Jalolov</h1>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Hi, I'm Sukhrobjon Jalolov</h1>
+      <!-- The typewriter effect will target this paragraph -->
+      <p class="typewriter"></p>
+      <a href="#projects" class="cta-btn">View My Work</a>
+    </div>
+  </header>
+
+  <!-- About Me Section -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2>About Me</h2>
+      <p>Hello! I'm Sukhrobjon Jalolov, a passionate Full-Stack Developer with a knack for building dynamic and responsive web applications. I love bringing ideas to life, from conceptual design to deployment, focusing on clean code and user-friendly experiences. My journey in web development began with a curiosity for how things work on the internet, and it quickly evolved into a drive to create impactful digital solutions. I'm always eager to learn new technologies and improve my craft.</p>
+      <p>In my spare time, I enjoy gaming, watching shows. I'm trying to learn animation as well.</p>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="section">
+    <div class="container">
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>Frontend Development</h3>
+          <ul>
+            <li>HTML5 & CSS3 (Flexbox, Grid)</li>
+            <li>JavaScript (ES6+)</li>
+            <li>React.js (Hooks, Context API)</li>
+            <li>Responsive Design</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Backend Development</h3>
+          <ul>
+            <li>Node.js & Express.js</li>
+            <li>Python & Django/Flask</li>
+            <li>RESTful API Design</li>
+            <li>Authentication & Authorization</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Tools & Practices</h3>
+          <ul>
+            <li>Git & GitHub/GitLab</li>
+            <li>VS Code</li>
+            <li>Figma (Basic UI/UX)</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Databases</h3>
+          <ul>
+            <li>MySQL</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+        <!-- Project Card 1 -->
+        <!-- Project Card 2 -->
+        <div class="project-card">
+          <h3>Your Idea</h3>
+          <img src="https://placehold.co/400x200/B2D8D8/000000?text=Your+Idea" onerror="this.onerror=null;this.src='https://placehold.co/400x200?text=Image+Not+Found';" alt="Your Idea">
+          <p>Let's bring your idea to life! Let's get coding!</p>
+          <div class="project-tech">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>Express.js</span>
+            <span>MongoDB</span>
+          </div>
+          <div class="project-links">
+            <a href="#" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+            <a href="#" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
+          </div>
+        </div>
+
+        <!-- Project Card 3 -->
+         <!-- Add more project cards as needed -->
+
+      </div>
+    </div><br>
+      <p>*Buttons don't work for now because I don't actually have anything to show</p>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>Contact</h2>
+      <p>I'm always open to new opportunities and collaborations. Feel free to reach out!</p>
+      <div class="contact-info">
+        <p><i class="fas fa-envelope"></i> Email: <a href="mailto:suxrobjalolovhpfan@gmail.com">suxrobjalolovhpfan@gmail.com</a></p>
+        <p><i class="fab fa-github"></i> GitHub: <a href="https://github.com/katsukidevs" target="_blank">github.com/katsukidevs</a></p>
+        <!-- Optional: Add a simple contact form -->
+        <!--
+        <form class="contact-form">
+          <input type="text" placeholder="Sukhrobjon Jalolov" required>
+          <input type="email" placeholder="Your Email" required>
+          <textarea placeholder="Your Message" rows="5" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+        -->
+      </div>
+    </div>
+  </section>Sukhrobjon Jalolov
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Sukhrobjon Jalolov. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Main Script -->
+  <script src="script.js"></script>
+</body>
+</html>
